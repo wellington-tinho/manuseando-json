@@ -100,7 +100,8 @@ function getTotalPrice(ids, productsList,promotion){
 
 		});
 
-	return somatorio
+	
+		return somatorio
 } 
 
 function getDiscountValue(ids,productsList,totalPrice) {
@@ -125,17 +126,17 @@ function getShoppingCart(ids, productsList) {
 	const discount = ((discountValue*100)/(totalPrice+discountValue)).toFixed(2)
 
 
-	console.log({products,promotion,totalPrice,discountValue,discount});
+	// console.log({products,promotion,totalPrice,discountValue,discount});
 	return {
 		products,
 		promotion,
-		totalPrice,
-		discountValue,
-		discount
+		totalPrice:`${totalPrice.toFixed(2)}`,
+		discountValue:`${discountValue.toFixed(2)}`,
+		discount:`${discount}%`,
 	};
 }
 
 module.exports = {
 	getShoppingCart
 };
-getShoppingCart(ids, products)
+
