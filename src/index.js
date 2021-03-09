@@ -27,19 +27,19 @@ function getTypePromotion(repeatsPerCategory){
 	var promotion
 	Object.keys(repeatsPerCategory).some((key)=> {  
 		if (repeatsPerCategory[key]>=4){
-			promotion = "promotion: 'FULL LOOK'"
+			promotion = 'FULL LOOK'
 			return(true);
 		}
 		else if (repeatsPerCategory[key]==3){
-			promotion = "promotion: 'TRIPLE LOOK'"
+			promotion = 'TRIPLE LOOK'
 			return(true);
 		}
 		else if ((Object.keys(repeatsPerCategory)[0]=!0) && (Object.keys(repeatsPerCategory)[1]=!0) ){
-			promotion = "promotion: 'DOUBLE LOOK'"
+			promotion = 'DOUBLE LOOK'
 			return(true);
 		}
 		else if ((Object.keys(repeatsPerCategory)[0]>=1)){
-			promotion = "promotion: 'SINGLE LOOK'"
+			promotion = 'SINGLE LOOK'
 			return(true);
 		}
 	})
@@ -58,8 +58,6 @@ function getQuantityPerCategory(itens) {
 	})
 	return repeatsPerCategory
 	// console.log(getTypePromotion(repeatsPerCategory));
-	
-
 }
 
 function getPromotion(productsList) {
@@ -71,12 +69,35 @@ function getPromotion(productsList) {
 	return( getTypePromotion(getQuantityPerCategory(itens)));
 }
 
+function getTotalPrice(ids, productsList,promotion){
+
+	var productIds
+	productIds = productsList.filter((product) => {
+		return ids.includes(product.id)
+	})
+	// console.log(productIds);
+	productIds.forEach(product => {
+		console.log(product.promotions[0].looks,'includes',promotion);
+		console.log((product.promotions[0].looks).includes(promotion));
+	
+		// product.promotions[0].looks.forEach(promotions => {
+		// 	console.log(promotions==promotion);
+		// });
+		
+		});
+			// array1.find(element => element == 10);
+
+	console.log(promotion);
+
+	return productIds
+} 
 
 function getShoppingCart(ids, productsList) {
 	const products = getProducts(ids, productsList)
 	const promotion = getPromotion(products)
-	console.log(products,promotion);
-	// const totalPrice = getTotalPrice
+	// console.log({products,promotion});
+	
+	const totalPrice = getTotalPrice(ids, productsList,promotion)
 	// const discountValue = getDiscountValue
 	// const discount =  getDiscount
 	return {
