@@ -24,25 +24,32 @@ function getProducts(ids, productsList) {
 }
 
 function getTypePromotion(repeatsPerCategory){
-	var promotion
-	Object.keys(repeatsPerCategory).some((key)=> {  
-		if (repeatsPerCategory[key]>=4){
-			promotion = 'FULL LOOK'
-			return(true);
-		}
-		else if (repeatsPerCategory[key]==3){
+	var promotion = 'FULL LOOK'
+	
+		var notIsFullLook = false
+		Object.keys(repeatsPerCategory).some((key)=> {  
+			if (repeatsPerCategory[key] < 1){
+				notIsFullLook = true
+				}
+			})
+		if (notIsFullLook){
+		
+		Object.keys(repeatsPerCategory).some((key)=> {  
+		
+		if (repeatsPerCategory[key]==3){
 			promotion = 'TRIPLE LOOK'
 			return(true);
 		}
-		else if ((Object.keys(repeatsPerCategory)[0]=!0) && (Object.keys(repeatsPerCategory)[1]=!0) ){
+		else if ((repeatsPerCategory[Object.keys(repeatsPerCategory)[1]])>=1  ){
 			promotion = 'DOUBLE LOOK'
 			return(true);
 		}
-		else if ((Object.keys(repeatsPerCategory)[0]>=1)){
+		else {
 			promotion = 'SINGLE LOOK'
 			return(true);
 		}
 	})
+}
 	return promotion
 }
 
@@ -57,7 +64,6 @@ function getQuantityPerCategory(itens) {
 		repeatsPerCategory[category]++
 	})
 	return repeatsPerCategory
-	// console.log(getTypePromotion(repeatsPerCategory));
 }
 
 function getPromotion(productsList) {
@@ -69,47 +75,67 @@ function getPromotion(productsList) {
 	return( getTypePromotion(getQuantityPerCategory(itens)));
 }
 
-function getTotalPrice(ids, productsList,promotion){
-
-	var productIds
-	productIds = productsList.filter((product) => {
+function getProductsIncludeIds(ids,productsList){
+	var productIds = productsList.filter((product) => {
 		return ids.includes(product.id)
 	})
-	// console.log(productIds);
-	productIds.forEach(product => {
-		console.log(product.promotions[0].looks,'includes',promotion);
-		console.log((product.promotions[0].looks).includes(promotion));
-	
-		// product.promotions[0].looks.forEach(promotions => {
-		// 	console.log(promotions==promotion);
-		// });
-		
-		});
-			// array1.find(element => element == 10);
-
-	console.log(promotion);
-
-	return productIds
+return productIds
 } 
+
+function getTotalPrice(ids, productsList,promotion){
+	var productIds = getProductsIncludeIds(ids,productsList)
+	var somatorio = 0
+	var aux = 0
+	productIds.forEach(product => {
+		aux = 0
+		for(var count=0; count<product.promotions.length; count++){
+			if ((product.promotions[count].looks).includes(promotion)){
+				aux = product.promotions[count].price
+			}
+		}
+		if (aux === 0) {
+			aux = product.regularPrice
+		}
+		somatorio=somatorio+aux
+
+		});
+
+	return somatorio
+} 
+
+function getDiscountValue(ids,productsList,totalPrice) {
+	var productIds = getProductsIncludeIds(ids,productsList)
+	var somatorio = 0
+	productIds.forEach(product => {
+		somatorio += product.regularPrice;
+		
+	});
+	return somatorio - totalPrice
+}
 
 function getShoppingCart(ids, productsList) {
 	const products = getProducts(ids, productsList)
+
 	const promotion = getPromotion(products)
-	// console.log({products,promotion});
 	
 	const totalPrice = getTotalPrice(ids, productsList,promotion)
-	// const discountValue = getDiscountValue
-	// const discount =  getDiscount
+
+	const discountValue = getDiscountValue(ids,productsList,totalPrice)
+	
+	const discount = ((discountValue*100)/(totalPrice+discountValue)).toFixed(2)
+
+
+	console.log({products,promotion,totalPrice,discountValue,discount});
 	return {
 		products,
-		promotion
-		// totalPrice,
-		// discountValue,
-		// discount,
+		promotion,
+		totalPrice,
+		discountValue,
+		discount
 	};
 }
 
 module.exports = {
 	getShoppingCart
 };
-getShoppingCart([ 310, 240,260,110, 120,130,320,140], products)
+getShoppingCart(ids, products)
