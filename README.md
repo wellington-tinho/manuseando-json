@@ -1,4 +1,7 @@
-# Descobrir as promoções aplicadas a um carrinho de compras usando NodeJS
+*O codigo acima corresponde a solução do seguinte problema*
+
+
+## Descobrir as promoções aplicadas a um carrinho de compras usando NodeJS
 
 O arquivo `src/data/products.json` possui uma lista de **25 produtos** diferentes,
 distribuídos em **4 categorias**:
@@ -175,8 +178,4 @@ Neste desafio, você vai praticar os seus conhecimentos em:
 - **Métodos de Arrays**
 - **Composição de funções**
 
-## Requisitos
-​
-Para este desafio você precisará:
-- NodeJS LTS (8.12.0+)
-- Instale as dependências do projeto através do comando `npm install`.
+
