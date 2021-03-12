@@ -1,4 +1,4 @@
-*O codigo acima corresponde a solução do seguinte problema*
+### *O codigo acima corresponde a solução do seguinte problema*
 
 
 ## Descobrir as promoções aplicadas a um carrinho de compras usando NodeJS
